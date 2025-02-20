@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div id="wordContainer">
+    <select id="languageSelector">
+        <option value="en-US">English</option>
+        <option value="fr-FR">French</option>
+        <option value="es-ES">Spanish</option>
+        <option value="de-DE">German</option>
+        <option value="nl-NL" selected>Dutch</option>  <!-- Dutch is now the default -->
+    </select>
+
+    <h2 id="word" contenteditable="false">Word</h2>
+    <i id="pronounce-icon" class="fas fa-volume-up"></i>
+    <p id="sentence" contenteditable="false">Sentence</p>
+
+    <div class="stats-container">
+        <div class="stat-item">
+            <i class="fas fa-fire"></i>
+            <span id="streak">Streak: 0</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-check"></i>
+            <span id="accuracy">Accuracy: 0%</span>
+        </div>
+    </div>
+
+    <div id="typingContainer" class="typing-container hidden">
+        <input type="text" id="typingInput" placeholder="Type the word here..." autocomplete="off">
+        <div id="feedback"></div>
+    </div>
+
+    <div id="navigation">
+        <button id="previous" title="Previous"><i class="fas fa-chevron-left"></i></button>
+        <button id="next" title="Next"><i class="fas fa-chevron-right"></i></button>
+        <button id="toggleTyping" title="Toggle Typing Practice"><i class="fas fa-keyboard"></i></button>
+        <button id="remove" title="Remove"><i class="fas fa-trash-alt"></i></button>
+        <button id="download" title="Download"><i class="fas fa-download"></i></button>
+    </div>
+
+    <p id="message"></p>
+</div>
+{% endblock %}

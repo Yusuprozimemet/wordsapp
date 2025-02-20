@@ -1,0 +1,114 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 4vw; /* Use viewport units for scalable margins */
+    background-color: #f5f5f5;
+    min-height: 100vh; /* Ensure body takes full height on all devices */
+}
+
+#wordContainer {
+    max-width: 90%; /* Flexible width, not fixed at 600px */
+    margin: 0 auto;
+    padding: 4vw; /* Scale padding with viewport */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#word {
+    font-size: clamp(1.5em, 5vw, 2.5em); /* Min 1.5em, preferred 5vw, max 2.5em */
+    margin: 2vw 0;
+    display: inline-block;
+}
+
+#pronounce-icon {
+    cursor: pointer;
+    margin-left: 2vw;
+    color: #666;
+    font-size: clamp(1em, 4vw, 1.5em); /* Responsive icon size */
+}
+
+#sentence {
+    font-size: clamp(1em, 3vw, 1.2em); /* Responsive font size */
+    color: #666;
+    margin: 2vw 0;
+}
+
+#navigation {
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    justify-content: center;
+    gap: 2vw; /* Scalable gap */
+    margin: 4vw 0;
+}
+
+button {
+    padding: 1.5vw 3vw; /* Scale padding with viewport */
+    border: none;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: clamp(0.9em, 2.5vw, 1.1em); /* Responsive button text */
+}
+
+button:hover {
+    background-color: #e0e0e0;
+}
+
+.stats-container {
+    display: flex;
+    flex-wrap: wrap; /* Wrap stats on small screens */
+    justify-content: space-around;
+    margin: 4vw 0;
+    gap: 2vw; /* Add spacing between wrapped items */
+}
+
+.typing-container {
+    margin: 4vw 0;
+}
+
+.typing-container.hidden {
+    display: none;
+}
+
+#typingInput {
+    width: 100%;
+    padding: 2vw; /* Scale padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: clamp(0.9em, 2.5vw, 1.1em); /* Responsive input text */
+}
+
+/* Media Queries for finer control */
+@media (max-width: 768px) { /* Tablets like iPad */
+    #wordContainer {
+        padding: 3vw;
+    }
+    #navigation {
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: center;
+    }
+    button {
+        width: 80%; /* Buttons take more width on tablets */
+        padding: 2vw 4vw;
+    }
+}
+
+@media (max-width: 480px) { /* Phones */
+    body {
+        margin: 2vw; /* Reduce margin on small screens */
+    }
+    #wordContainer {
+        padding: 2vw;
+    }
+    #navigation {
+        gap: 1vw;
+    }
+    button {
+        width: 100%; /* Full-width buttons on phones */
+        padding: 3vw 5vw;
+    }
+    .stats-container {
+        flex-direction: column; /* Stack stats vertically */
+        align-items: center;
+    }
+}
