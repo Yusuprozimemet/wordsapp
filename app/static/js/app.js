@@ -4,11 +4,12 @@ let typingMode = false;
 let streakCount = 0;
 let correctCharsTyped = 0;
 let totalCharsTyped = 0;
+let filteredWords = []; // New array to hold search results
 
 document.addEventListener('DOMContentLoaded', () => {
     loadWords();
     setupEventListeners();
-    updateAccuracy(); // Initialize accuracy display
+    updateAccuracy();
 });
 
 function setupEventListeners() {
@@ -19,20 +20,23 @@ function setupEventListeners() {
     document.getElementById('toggleTyping').addEventListener('click', toggleTypingMode);
     document.getElementById('pronounce-icon').addEventListener('click', pronounceWord);
     document.getElementById('typingInput').addEventListener('input', checkTyping);
-    document.getElementById('languageSelector').addEventListener('change', changeLanguage); // Add language selector event
+    document.getElementById('languageSelector').addEventListener('change', changeLanguage);
+    document.getElementById('searchInput').addEventListener('input', handleSearch); // New search handler
 }
 
 async function loadWords() {
     try {
         const response = await fetch('/api/words');
         words = await response.json();
+        filteredWords = [...words]; // Initialize filtered words
         if (words.length > 0) {
-            currentIndex = 0; // Reset index when loading new words
+            currentIndex = 0;
             updateWordDisplay();
         } else {
             document.getElementById('word').textContent = 'No words available. Add some!';
             document.getElementById('sentence').textContent = '';
         }
+        updateWordCount(); // Update the word count display
     } catch (error) {
         console.error('Failed to load words:', error);
         document.getElementById('word').textContent = 'Failed to load words.';
@@ -40,29 +44,52 @@ async function loadWords() {
     }
 }
 
+function updateWordCount() {
+    const totalCount = words.length;
+    const filteredCount = filteredWords.length;
+    const countText = filteredCount === totalCount ? 
+        `Total words: ${totalCount}` : 
+        `Showing ${filteredCount} of ${totalCount} words`;
+    document.getElementById('wordCount').textContent = countText;
+}
+
+function handleSearch(event) {
+    const searchTerm = event.target.value.toLowerCase();
+    if (searchTerm === '') {
+        filteredWords = [...words];
+    } else {
+        filteredWords = words.filter(word => 
+            word.word.toLowerCase().includes(searchTerm) || 
+            word.sentence.toLowerCase().includes(searchTerm)
+        );
+    }
+    currentIndex = 0; // Reset to first matching word
+    updateWordDisplay();
+    updateWordCount();
+}
+
 function updateWordDisplay() {
-    if (words.length === 0) {
-        document.getElementById('word').textContent = 'No words available';
+    if (filteredWords.length === 0) {
+        document.getElementById('word').textContent = 'No matching words';
         document.getElementById('sentence').textContent = '';
         return;
     }
 
-    const currentWord = words[currentIndex];
+    const currentWord = filteredWords[currentIndex];
     document.getElementById('word').textContent = currentWord.word;
     document.getElementById('sentence').textContent = currentWord.sentence;
 }
 
-
 function previousWord() {
-    if (words.length === 0) return;
-    currentIndex = (currentIndex - 1 + words.length) % words.length;
+    if (filteredWords.length === 0) return;
+    currentIndex = (currentIndex - 1 + filteredWords.length) % filteredWords.length;
     updateWordDisplay();
     resetTyping();
 }
 
 function nextWord() {
-    if (words.length === 0) return;
-    currentIndex = (currentIndex + 1) % words.length;
+    if (filteredWords.length === 0) return;
+    currentIndex = (currentIndex + 1) % filteredWords.length;
     updateWordDisplay();
     resetTyping();
 }
